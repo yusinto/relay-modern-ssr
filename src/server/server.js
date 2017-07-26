@@ -5,21 +5,12 @@ import WebpackDevMiddleware from 'webpack-dev-middleware';
 import WebPackHotMiddleware from 'webpack-hot-middleware';
 
 import RelayEnvironment from '../universal/relayEnvironment';
-import {appRootQuery} from '../universal/app';
+import App, {appRootQuery} from '../universal/app';
+import React from 'react';
+import {renderToStaticMarkup} from 'react-dom/server';
 
 const app = Express();
 const webpackCompiler = Webpack(WebpackConfig);
-const htmlString = `<!DOCTYPE html>
-    <html>
-         <head>
-            <title>Relay Modern SSR</title>
-            <meta name="viewport" content="width=device-width, initial-scale=1">
-          </head>
-          <body>
-            <div id="reactDiv" />
-            <script src="/dist/bundle.js"></script>
-          </body>
-    </html>`;
 app.use(WebpackDevMiddleware(webpackCompiler, {
   publicPath: WebpackConfig.output.publicPath,
   noInfo: true,
@@ -58,17 +49,43 @@ app.use((req, res) => {
   }
 }
    */
-  const {createOperationSelector, getOperation} = RelayEnvironment.unstable_internal;
-  const query = getOperation(appRootQuery);
-  const operation = createOperationSelector(query);
-  RelayEnvironment.streamQuery({
+  const {createOperationSelector} = RelayEnvironment.unstable_internal;
+  const operation = createOperationSelector(appRootQuery());
+  // console.log(`appRootQuery look like: ${JSON.stringify(appRootQuery)}`);
+  // console.log(`operation look like: ${JSON.stringify(operation)}`);
+  RelayEnvironment.sendQuery({
     cacheConfig: null,
     onCompleted: () => console.log('onCompleted'),
     onError: () => console.log('onError'),
-    onNext: (results) => console.log(`onNext results look like: ${JSON.stringify(results)}`), // WORKS!!
+    onNext: (results) => {
+
+      // TODO: at the moment <App /> outputs <div>loading...</div> which needs to be fixed!
+
+      // At this point, the graphql response should already be in the Store
+      // So we can look it up and use it to render our App component
+      const snapshot = RelayEnvironment.lookup(operation.fragment);
+
+      // TODO: Somehow supply this to <App />. How??!!!
+      const data = snapshot.data;
+      
+      // console.log(`onNext results look like: ${JSON.stringify(results)}`);
+      console.log(`snapshot look like: ${JSON.stringify(snapshot)}`);
+    },
     operation,
   });
 
+
+  const htmlString = `<!DOCTYPE html>
+    <html>
+         <head>
+            <title>Relay Modern SSR</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+          </head>
+          <body>
+            <div id="reactDiv">${renderToStaticMarkup(<App />)}</div>
+            <script src="/dist/bundle.js"></script>
+          </body>
+    </html>`;
 
   res.end(htmlString);
 });
