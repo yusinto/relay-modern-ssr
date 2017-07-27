@@ -65,29 +65,23 @@ app.use((req, res) => {
       // So we can look it up and use it to render our App component
       const snapshot = RelayEnvironment.lookup(operation.fragment);
 
-      // TODO: Somehow supply this to <App />. How??!!!
-      const data = snapshot.data;
-      
-      // console.log(`onNext results look like: ${JSON.stringify(results)}`);
-      console.log(`snapshot look like: ${JSON.stringify(snapshot)}`);
-    },
-    operation,
-  });
-
-
-  const htmlString = `<!DOCTYPE html>
+      // TODO: Somehow supply snapshot.data to <App />
+      const htmlString = `<!DOCTYPE html>
     <html>
          <head>
             <title>Relay Modern SSR</title>
             <meta name="viewport" content="width=device-width, initial-scale=1">
           </head>
           <body>
-            <div id="reactDiv">${renderToStaticMarkup(<App />)}</div>
+            <div id="reactDiv">${renderToStaticMarkup(<App data={snapshot.data}/>)}</div>
             <script src="/dist/bundle.js"></script>
           </body>
     </html>`;
 
-  res.end(htmlString);
+      res.end(htmlString);
+    },
+    operation,
+  });
 });
 
 app.listen(3000, () => {

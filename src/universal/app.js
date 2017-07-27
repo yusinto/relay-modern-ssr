@@ -11,7 +11,11 @@ export const appRootQuery = graphql`
   }
 `;
 
-const renderMethod = ({error, props}) => {
+const renderMethod = ({error, props}, data) => {
+  if(data) {
+    return <Customer viewer={data.viewer}/>;
+  }
+
   if (error) {
     return <div>Error! {error.message}</div>;
   } else if (props) {
@@ -22,7 +26,8 @@ const renderMethod = ({error, props}) => {
 
 class App extends Component {
   render() {
-    return <QueryRenderer environment={environment} query={appRootQuery} render={renderMethod}/>;
+    console.log(`data looks like: ${JSON.stringify(this.props.data)}`);
+    return <QueryRenderer environment={environment} query={appRootQuery} render={(a) => renderMethod(a, this.props.data)}/>;
   }
 }
 
