@@ -4,18 +4,14 @@ import {QueryRenderer, graphql} from 'react-relay';
 import environment from './relayEnvironment';
 
 export const appRootQuery = graphql`
-  query appRootQuery {
-    viewer {
-      ...customer_viewer
+    query appRootQuery {
+        viewer {
+            ...customer_viewer
+        }
     }
-  }
 `;
 
-const renderMethod = ({error, props}, data) => {
-  if(data) {
-    return <Customer viewer={data.viewer}/>;
-  }
-
+const renderMethod = ({error, props}) => {
   if (error) {
     return <div>Error! {error.message}</div>;
   } else if (props) {
@@ -25,9 +21,28 @@ const renderMethod = ({error, props}, data) => {
 };
 
 class App extends Component {
+  state = {
+    pageNumber: 0,
+  };
+
+  onClick = () => {
+    const pageNumber = this.state.pageNumber + 1;
+    this.setState({pageNumber});
+  };
+
   render() {
-    console.log(`data looks like: ${JSON.stringify(this.props.data)}`);
-    return <QueryRenderer environment={environment} query={appRootQuery} render={(a) => renderMethod(a, this.props.data)}/>;
+    return (
+      <div>
+        <button onClick={this.onClick}>Click to alternate between static text and customer info</button>
+        <br/><br/>
+        {
+          this.state.pageNumber % 2 === 0 ?
+            <QueryRenderer environment={environment} query={appRootQuery}
+                           render={renderMethod}/>
+            :
+            <div>Static text no fetch.</div>
+        }
+      </div>);
   }
 }
 

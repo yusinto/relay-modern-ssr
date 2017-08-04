@@ -63,7 +63,8 @@ app.use((req, res) => {
 
       // At this point, the graphql response should already be in the Store
       // So we can look it up and use it to render our App component
-      const snapshot = RelayEnvironment.lookup(operation.fragment);
+      //const snapshot = RelayEnvironment.lookup(operation.fragment);
+      const componentToRender = <App />;
 
       // TODO: Somehow supply snapshot.data to <App />
       const htmlString = `<!DOCTYPE html>
@@ -73,7 +74,7 @@ app.use((req, res) => {
             <meta name="viewport" content="width=device-width, initial-scale=1">
           </head>
           <body>
-            <div id="reactDiv">${renderToStaticMarkup(<App data={snapshot.data}/>)}</div>
+            <div id="reactDiv">${renderToStaticMarkup(componentToRender)}</div>
             <script src="/dist/bundle.js"></script>
           </body>
     </html>`;
