@@ -13,6 +13,7 @@
   "plugins": [
     "transform-decorators-legacy",
     "array-includes",
-    "transform-async-to-generator"
+    "transform-async-to-generator",
+    "relay"
   ]
 }
