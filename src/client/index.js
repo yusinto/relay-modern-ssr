@@ -1,9 +1,18 @@
 import React from 'react';
-import {render} from 'react-dom';
-import createBrowserRouter from 'found/lib/createBrowserRouter';
+import {hydrate} from 'react-dom';
+import createInitialBrowserRouter from 'found/lib/createInitialBrowserRouter';
+import createRender from 'found/lib/createRender';
 import routeConfig from '../universal/routes';
 
-const BrowserRouter = createBrowserRouter(routeConfig);
+(async () => {
+  const BrowserRouter = await createInitialBrowserRouter({
+    routeConfig,
+    render: createRender({
+      renderError: (
+        { error }, // eslint-disable-line react/prop-types
+      ) => <div>{error.status === 404 ? 'Not found' : 'Error'}</div>,
+    }),
+  });
 
-render(<BrowserRouter/>, document.getElementById('reactDiv'));
-
+  hydrate(<BrowserRouter/>, document.getElementById('reactDiv'));
+})();

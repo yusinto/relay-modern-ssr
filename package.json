@@ -11,7 +11,7 @@
   "author": "Yus Ng",
   "license": "ISC",
   "dependencies": {
-    "babel-polyfill": "^6.23.0",
+    "babel-polyfill": "^6.26.0",
     "babel-register": "^6.24.1",
     "bluebird": "^3.5.0",
     "express": "^4.15.3",
@@ -19,10 +19,8 @@
     "found": "^0.3.7",
     "graphql": "^0.12.3",
     "isomorphic-fetch": "^2.2.1",
-    "react": "^15.6.1",
-    "react-dom": "^15.6.1",
-    "react-relay": "^1.1.0",
-    "relay-runtime": "^1.1.0"
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
@@ -40,7 +38,6 @@
     "react-transform-catch-errors": "^1.0.2",
     "react-transform-hmr": "^1.0.4",
     "redbox-react": "^1.4.3",
-    "relay-compiler": "^1.1.0",
     "webpack": "^3.3.0",
     "webpack-dev-middleware": "^1.11.0",
     "webpack-dev-server": "^2.5.1",

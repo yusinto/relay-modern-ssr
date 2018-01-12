@@ -13,4 +13,4 @@ const routes =
     <Route path="*" Component={() => "Page Not Found"}/>
   </Route>;
 
-export default {routeConfig: makeRouteConfig(routes)};
+export default makeRouteConfig(routes);
