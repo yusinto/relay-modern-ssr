@@ -1,6 +1,9 @@
 import React from 'react';
 import {render} from 'react-dom';
-import App from '../universal/app';
+import createBrowserRouter from 'found/lib/createBrowserRouter';
+import routeConfig from '../universal/routes';
 
-render(<App />, document.getElementById('reactDiv'));
+const BrowserRouter = createBrowserRouter(routeConfig);
+
+render(<BrowserRouter/>, document.getElementById('reactDiv'));
 

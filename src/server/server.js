@@ -44,6 +44,6 @@ app.use((req, res) => {
 
   res.end(htmlString);
 });
-app.listen(8181, () => {
+app.listen(3000, () => {
   console.log(`Started relay-modern-ssr...`);
 });
