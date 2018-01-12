@@ -8,14 +8,16 @@ const App = ({location: {pathname}, children}) => {
       <span>
           {
             pathname === '/' ?
-              <span>Home</span> : <Link to="/">Home</Link>
+              <span style={{textDecoration: 'underline'}}>Home</span> :
+              <Link to="/" style={{textDecoration: 'none'}}>Home</Link>
           }
         </span>
       {' '} | {' '}
       <span>
           {
             pathname === '/countries' ?
-              <span>Countries</span> : <Link to="/countries">Countries</Link>
+              <span style={{textDecoration: 'underline'}}>Countries</span> :
+              <Link to="/countries" style={{textDecoration: 'none'}}>Countries</Link>
           }
         </span>
       <div>
